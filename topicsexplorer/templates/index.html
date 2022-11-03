@@ -65,9 +65,9 @@
             <p><input type="number" name="topics" value="10" min="1" required></p>
             <p>The number of sampling iterations should be a trade-off between the time taken to complete sampling and
                 the quality of the model:</p>
-            <p><input type="number" name="iterations" value="100" min="10" required></p>
+            <p><input type="number" name="iterations" value="2000" min="10" required></p>
             <p>Set the alpha-Parameter:</p>
-            <p><input type="number" name="alpha" value="0.1" required></p>
+            <p><input type="number" name="alpha" value="0.1" step="0.01" required></p>
             <h2>3 Visualizing</h2>
             <p>When using topic models to explore text collections, one is typically interested in examining texts in
                 terms of their constituent topics – instead of pure word frequencies. Because the number of topics is
