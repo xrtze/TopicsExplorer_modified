@@ -15,7 +15,7 @@ def wrapper():
     """Wrapper for the topic modeling workflow."""
     try:
         logging.info("Just started topic modeling workflow.")
-        data = utils.get_data("corpus", "topics", "iterations", "stopwords", "mfw")
+        data = utils.get_data("corpus", "topics", "iterations", "alpha", "stopwords", "mfw")
         if len(data["corpus"]) < 10:
             raise ValueError(
                 "Your corpus is too small. " "Please select at least 10 text files."
@@ -29,7 +29,7 @@ def wrapper():
         logging.info("Successfully preprocessed data.")
         database.insert_into("token_freqs", json.dumps(token_freqs))
         # 2. Create model:
-        model = create_model(dtm, data["topics"], data["iterations"])
+        model = create_model(dtm, data["topics"], data["iterations"], data["alpha"])
         parameters["log_likelihood"] = int(model.loglikelihood())
         database.insert_into("parameters", json.dumps(parameters))
         logging.info("Successfully created topic model.")
@@ -88,6 +88,7 @@ def preprocess(data):
     parameters = {
         "n_topics": int(data["topics"]),
         "n_iterations": int(data["iterations"]),
+        "v_alpha": int(data["alpha"]),
         "n_documents": int(D),
         "n_stopwords": int(len(stopwords)),
         "n_hapax": int(len(hapax)),
@@ -97,10 +98,10 @@ def preprocess(data):
     return dtm, num_tokens.tolist(), parameters
 
 
-def create_model(dtm, topics, iterations):
+def create_model(dtm, topics, iterations, alpha):
     """Create a topic model."""
     logging.info("Creating topic model...")
-    model = lda.LDA(n_topics=topics, n_iter=iterations)
+    model = lda.LDA(n_topics=topics, n_iter=iterations, alpha=alpha)
     model.fit(dtm.fillna(0.0).astype("int64").values)
     return model
 
