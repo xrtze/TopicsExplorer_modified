@@ -135,7 +135,7 @@ def get_data(corpus, topics, iterations, alpha, stopwords, mfw):
         "corpus": flask.request.files.getlist("corpus"),
         "topics": int(flask.request.form["topics"]),
         "iterations": int(flask.request.form["iterations"]),
-        "alpha": int(flask.request.form["alpha"])
+        "alpha": float(flask.request.form["alpha"])
     }
     if flask.request.files.get("stopwords", None):
         data["stopwords"] = flask.request.files["stopwords"]
@@ -196,8 +196,8 @@ def export_data():
 
     logging.info("Preparing topics...")
     topics = pd.read_json(topics, orient="index")
-    topics.index = ["Word {}".format(n) for n in range(topics.shape[1])]
-    topics.columns = ["Topic {}".format(n) for n in range(topics.shape[0])]
+    topics.index = ["Topic {}".format(n) for n in range(topics.shape[0])]
+    topics.columns = ["Word {}".format(n) for n in range(topics.shape[1])]
 
     logging.info("Preparing topic similarity matrix...")
     topic_similarities = pd.read_json(topic_similarities)

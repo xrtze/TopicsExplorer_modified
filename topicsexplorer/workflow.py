@@ -88,7 +88,7 @@ def preprocess(data):
     parameters = {
         "n_topics": int(data["topics"]),
         "n_iterations": int(data["iterations"]),
-        "v_alpha": int(data["alpha"]),
+        "v_alpha": float(data["alpha"]),
         "n_documents": int(D),
         "n_stopwords": int(len(stopwords)),
         "n_hapax": int(len(hapax)),
